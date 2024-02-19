@@ -1,7 +1,7 @@
-from colorama import Fore, Style, init
+##from colorama import Fore, Style, init
 
 # Inicializa colorama
-init(autoreset=True)
+#init(autoreset=True)
 
 def mostrar_menu():
     print("\nMenú:")
@@ -47,7 +47,8 @@ def editar_tarea(tareas):
             return
     print("El ID de la tarea no existe en la lista.")
 
-def mostrar_tareas(tareas):
+
+'''def mostrar_tareas(tareas):
     if tareas:
         print("Tareas en la lista:")
         for tarea in tareas:
@@ -61,7 +62,17 @@ def mostrar_tareas(tareas):
             print(color + f"ID: {tarea[0]}, Tarea: {tarea[1]}, Fecha: {tarea[2]}, Hora: {tarea[3]}, Estado: {tarea[4]}")
     else:
         print("La lista está vacía.")
+        '''
 
+def mostrar_tareas(tareas):
+    if tareas:
+        print("Tareas en la lista:")
+        for tarea in tareas:
+            print(f"ID: {tarea[0]}, Tarea: {tarea[1]}, Fecha: {tarea[2]}, Hora: {tarea[3]}, Estado: {tarea[4]}")
+    else:
+        print("La lista está vacía.")
+   
+        
 def guardar_tareas(tareas):
     with open("tareas.txt", "w") as archivo:
         for tarea in tareas:
