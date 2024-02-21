@@ -14,16 +14,37 @@ def mostrar_menu():
 
 def agregar_tarea(tareas, ultimo_id):
     tarea = input("Ingrese la tarea a agregar: ")
-    fecha = input("Ingrese la fecha (dd/mm/aaaa): ")
-    hora = input("Ingrese la hora (HH:MM): ")
+
+    while True:
+        fecha = input("Ingrese la fecha (dd/mm/aaaa): ")
+        if fecha.replace("/", "").isdigit() and len(fecha) == 10:
+            break
+        else:
+            print("Por favor, ingrese una fecha válida en el formato dd/mm/aaaa.")
+
+    while True:
+        hora = input("Ingrese la hora (HH:MM): ")
+        if hora.replace(":", "").isdigit() and len(hora) == 5:
+            break
+        else:
+            print("Por favor, ingrese una hora válida en el formato HH:MM.")
+
     estado = input("Ingrese el estado (Iniciada, en progreso, completada): ")
+
     ultimo_id += 1  # Incrementamos el ID para la nueva tarea
     tareas.append((ultimo_id, tarea, fecha, hora, estado))
     print(f"Tarea '{tarea}' con ID {ultimo_id} ha sido agregada.")
     return ultimo_id  # Devolvemos el nuevo último ID
 
+
 def borrar_tarea(tareas):
-    id_tarea = int(input("Ingrese el ID de la tarea a borrar: "))
+    while True:
+        try:
+            id_tarea = int(input("Ingrese el ID de la tarea a borrar: "))
+            break  # Sale del bucle si la conversión a entero es exitosa
+        except ValueError:
+            print("Por favor, ingrese un número válido como ID.")
+
     tarea_encontrada = False
     for tarea in tareas:
         if tarea[0] == id_tarea:
@@ -31,8 +52,10 @@ def borrar_tarea(tareas):
             tarea_encontrada = True
             print(f"Tarea con ID {id_tarea} ha sido borrada.")
             break
+
     if not tarea_encontrada:
         print("El ID de la tarea no existe en la lista.")
+
 
 def editar_tarea(tareas):
     id_tarea = int(input("Ingrese el ID de la tarea a editar: "))
@@ -66,18 +89,22 @@ def editar_tarea(tareas):
 
 def mostrar_tareas(tareas):
     if tareas:
-        print("Tareas en la lista:")
+        print("{:<5} {:<20} {:<12} {:<10} {:<15}".format("ID", "Tarea", "Fecha", "Hora", "Estado"))
+        print("-" * 65)  # Línea separadora
+
         for tarea in tareas:
-            print(f"ID: {tarea[0]}, Tarea: {tarea[1]}, Fecha: {tarea[2]}, Hora: {tarea[3]}, Estado: {tarea[4]}")
+            print("{:<5} {:<20} {:<12} {:<10} {:<15}".format(*tarea))
     else:
         print("La lista está vacía.")
+
    
         
 def guardar_tareas(tareas):
-    with open("tareas.txt", "w") as archivo:
+    with open("tareas.txt", "a") as archivo:  # Cambio a modo "a" (append)
         for tarea in tareas:
             archivo.write(f"{tarea[0]}, {tarea[1]}, {tarea[2]}, {tarea[3]}, {tarea[4]}\n")
     print("Tareas guardadas en tareas.txt.")
+
 
 def main():
     tareas = []
