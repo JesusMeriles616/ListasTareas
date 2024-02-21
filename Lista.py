@@ -58,17 +58,39 @@ def borrar_tarea(tareas):
 
 
 def editar_tarea(tareas):
-    id_tarea = int(input("Ingrese el ID de la tarea a editar: "))
+    while True:
+        try:
+            id_tarea = int(input("Ingrese el ID de la tarea a editar: "))
+            break  # Sale del bucle si la conversión a entero es exitosa
+        except ValueError:
+            print("Por favor, ingrese un número válido como ID.")
+
+    tarea_encontrada = False
     for i, tarea in enumerate(tareas):
         if tarea[0] == id_tarea:
             nueva_tarea = input("Ingrese la nueva tarea: ")
-            nueva_fecha = input("Ingrese la nueva fecha (dd/mm/aaaa): ")
-            nueva_hora = input("Ingrese la nueva hora (HH:MM): ")
+
+            while True:
+                nueva_fecha = input("Ingrese la nueva fecha (dd/mm/aaaa): ")
+                if len(nueva_fecha) == 10 and nueva_fecha[2] == nueva_fecha[5] == '/' and nueva_fecha[:2].isdigit() and nueva_fecha[3:5].isdigit() and nueva_fecha[6:].isdigit():
+                    break
+                else:
+                    print("Por favor, ingrese una fecha válida en el formato dd/mm/aaaa.")
+
+            while True:
+                nueva_hora = input("Ingrese la nueva hora (HH:MM): ")
+                if len(nueva_hora) == 5 and nueva_hora[2] == ':' and nueva_hora[:2].isdigit() and nueva_hora[3:].isdigit():
+                    break
+                else:
+                    print("Por favor, ingrese una hora válida en el formato HH:MM.")
+
             nuevo_estado = input("Ingrese el nuevo estado (Iniciada, en progreso, completada): ")
             tareas[i] = (id_tarea, nueva_tarea, nueva_fecha, nueva_hora, nuevo_estado)
             print(f"Tarea con ID {id_tarea} ha sido editada.")
             return
+
     print("El ID de la tarea no existe en la lista.")
+
 
 
 '''def mostrar_tareas(tareas):
@@ -97,13 +119,26 @@ def mostrar_tareas(tareas):
     else:
         print("La lista está vacía.")
 
+    # Mostrar tareas desde el archivo si existe
+    try:
+        with open("tareas.txt", "r") as archivo:
+            contenido = archivo.read()
+            if contenido:
+                print("\nTareas almacenadas en 'tareas.txt':")
+                print(contenido)
+    except FileNotFoundError:
+        pass  # Ignorar si el archivo no existe
+
+
+
    
         
 def guardar_tareas(tareas):
-    with open("tareas.txt", "a") as archivo:  # Cambio a modo "a" (append)
+    with open("tareas.txt", "w") as archivo:  # Cambio a modo "w" (write)
         for tarea in tareas:
             archivo.write(f"{tarea[0]}, {tarea[1]}, {tarea[2]}, {tarea[3]}, {tarea[4]}\n")
     print("Tareas guardadas en tareas.txt.")
+
 
 
 def main():
@@ -130,4 +165,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+    
+    
+    
